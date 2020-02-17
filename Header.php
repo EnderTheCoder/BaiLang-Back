@@ -10,6 +10,8 @@ require "function/Security.php";
 require "class/MySQL_API.php";
 require "class/Redis_API.php";
 require "class/SMS_API.php";
+require "class/Error_Core.php";
 $mysql = new MySQL_API();
 $redis = new Redis_API();
 $sms = new SMS_API();
+$return = new Error_Core();

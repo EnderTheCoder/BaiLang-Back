@@ -11,9 +11,9 @@ class MySQL_API
         return $conn;
     }
 
-    private function STD_PDO_CONNECT()
+    private function STD_PDO_CONNECT($db_name)
     {
-        $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
+        $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . $db_name;
         $conn = new pdo($dsn, DB_USERNAME, DB_PASSWORD);
         $conn->query('ser names utf8');
         return $conn;
@@ -120,27 +120,26 @@ class MySQL_API
 
     public function getApp($AppID)
     {
-        $result = null;
-        $sql = "SELECT AppKey FROM Apps WHERE Id = ?";
+        $result = array();
+        $sql = "SELECT AppKey, Dbname FROM Apps WHERE Id = ?";
         $conn = $this->STD_MYSQL_CONNECT();
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('s', $AppID);
-        $stmt->bind_result($result);
+        $stmt->bind_result($result['AppKey'], $result['DB_Name']);
         $stmt->execute();
+        $stmt->fetch();
         return $result;
     }
 
-    public function API_Query($sql, $retVal, $paramCnt, $param)
+    public function API_Query($sql, $paramCnt, $param, $app_id)
     {
-        $conn = $this->STD_PDO_CONNECT();
+        $db_name = $this->getApp($app_id);
+        $conn = $this->STD_PDO_CONNECT($db_name['DB_Name']);
         $stmt = $conn->prepare($sql);
         for ($i = 1; $i <= $paramCnt; $i++) {
             $stmt->bindValue($i, $param[$i], PDO::PARAM_STR);
         }
         $stmt->execute();
-        if ($retVal) {
-            return $stmt->fetchAll();
-        }
-        return true;
+        return $stmt->fetchAll();
     }
 }

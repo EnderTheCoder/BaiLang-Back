@@ -1,5 +1,6 @@
 <?php
 require "Header.php";
+signatureCheck();
 $result = array(
     'action' => null,
     'msg' => null,
@@ -7,23 +8,22 @@ $result = array(
 );
 switch ($_POST['type']) {
     case 'login':
-        if (isEmpty($_POST['ID']) ||
-            isEmpty($_POST['password']) ||
-            isEmpty($_POST['captcha'])) {
+        if (isEmpty($_POST['id']) ||
+            isEmpty($_POST['password'])) {
             $result['action'] = 'alert';
             $result['msg'] = '输入存在空值！';
             stdJqReturn($result);
         }
-        if (!captchaCheck()) {
-            $result['action'] = 'alert';
-            $result['msg'] = '验证码错误！';
-            stdJqReturn($result);
-        }
-        if (!strstr($_POST['ID'], '@'))
-            if ($_POST['ID'] >= 10000000000) $type = 'MobilePhone';
+//        if (!captchaCheck()) {
+//            $result['action'] = 'alert';
+//            $result['msg'] = '验证码错误！';
+//            stdJqReturn($result);
+//        }
+        if (!strstr($_POST['id'], '@'))
+            if ($_POST['id'] >= 10000000000) $type = 'MobilePhone';
             else $type = 'Uid';
         else $type = 'Email';
-        $reference = $mysql->getUserInf($type, $_POST['ID']);
+        $reference = $mysql->getUserInf($type, $_POST['id']);
         if ($reference == null || $reference['Password'] != md5($_POST['password'])) {
             $result['action'] = 'alert';
             $result['msg'] = '密码错误或该用户不存在';
@@ -34,9 +34,7 @@ switch ($_POST['type']) {
             $result['msg'] = '您尚未进入邮箱查收验证邮件，请验证后重试';
             stdJqReturn($result);
         }
-        $result['action'] = 'jump';
-        $result['value'] = URL;
-        stdJqReturn($result);
+        $return->retMsg('success');
         break;
     case 'register':
         if (isEmpty($_POST['nickName']) ||
