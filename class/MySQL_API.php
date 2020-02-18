@@ -25,13 +25,13 @@ class MySQL_API
         $sql = null;
         switch ($type) {
             case 'Uid':
-                $sql = "SELECT Uid, MobilePhone, Email, NickName, Password, RegTime, Regip, LastTime, Lastip, OlTime, Money, Golds, Points, BlackList, Emailprove FROM Users WHERE Uid = ?";
+                $sql = "SELECT Uid, MobilePhone, Email, NickName, Passwords, RegTime, Regip, LastTime, Lastip, OlTime, Money, Golds, Points, BlackList, Emailprove FROM Users WHERE Uid = ?";
                 break;
             case 'Email':
-                $sql = "SELECT Uid, MobilePhone, Email, NickName, Password, RegTime, Regip, LastTime, Lastip, OlTime, Money, Golds, Points, BlackList, Emailprove FROM Users WHERE Email = ?";
+                $sql = "SELECT Uid, MobilePhone, Email, NickName, Passwords, RegTime, Regip, LastTime, Lastip, OlTime, Money, Golds, Points, BlackList, Emailprove FROM Users WHERE Email = ?";
                 break;
             case 'MobilePhone':
-                $sql = "SELECT Uid, MobilePhone, Email, NickName, Password, RegTime, Regip, LastTime, Lastip, OlTime, Money, Golds, Points, BlackList, Emailprove FROM Users WHERE MobilePhone = ?";
+                $sql = "SELECT Uid, MobilePhone, Email, NickName, Passwords, RegTime, Regip, LastTime, Lastip, OlTime, Money, Golds, Points, BlackList, Emailprove FROM Users WHERE MobilePhone = ?";
                 break;
         }
         $conn = $this->STD_MYSQL_CONNECT();
@@ -61,7 +61,7 @@ class MySQL_API
 
     public function regNewUser($Phone, $Email, $NickName, $Password, $RegTime, $RegIP)
     {
-        $sql = "INSERT INTO Users (MobilePhone, Email, NickName, Password, RegTime, Regip) VALUES (?, ?, ?, ?, ?, ?);";
+        $sql = "INSERT INTO Users (MobilePhone, Email, NickName, Passwords, RegTime, Regip) VALUES (?, ?, ?, ?, ?, ?);";
         $conn = $this->STD_MYSQL_CONNECT();
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ssssss', $Phone, $Email, $NickName, $Password, $RegTime, $RegIP);
