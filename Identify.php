@@ -37,16 +37,16 @@ switch ($_POST['type']) {
         $return->retMsg('success');
         break;
     case 'register':
-        if (isEmpty($_POST['nickName']) ||
+        if (isEmpty($_POST['nick_name']) ||
             isEmpty($_POST['password']) ||
             isEmpty($_POST['phone']) ||
             isEmpty($_POST['email']) ||
-            isEmpty($_POST['SMS_Captcha'])) {
+            isEmpty($_POST['sms_captcha'])) {
             $result['action'] = 'alert';
             $result['msg'] = '输入存在空值！';
             stdJqReturn($result);
         }
-        if ($redis->phoneCapGet($_POST['phone']) != $_POST['SMS_Captcha']) {
+        if ($redis->phoneCapGet($_POST['phone']) != $_POST['sms_captcha']) {
             $result['action'] = 'alert';
             $result['msg'] = '手机未通过验证！';
             stdJqReturn($result);
@@ -55,9 +55,9 @@ switch ($_POST['type']) {
         $redis->phoneCapSet($_POST['phone'], $SMS_Captcha);
         $emailKey = md5(spawnKey());
         $link = URL . "/EmailReturn.html?token=" . $emailKey;
-        $message = "新用户" . $_POST['nickName'] . "您好，轻点击下方链接来完成您在<a href='" . URL . "'>【白浪轻腾】</a>的注册<br>" . "<a href='$link'>$link</a>";
+        $message = "新用户" . $_POST['nick_name'] . "您好，轻点击下方链接来完成您在<a href='" . URL . "'>【白浪轻腾】</a>的注册<br>" . "<a href='$link'>$link</a>";
         sendMail($_POST['email'], "完成您在白浪轻腾的注册", $message);
-        $Uid = $mysql->regNewUser($_POST['phone'], $_POST['email'], $_POST['nickName'], md5($_POST['password']), time(), $_SERVER['REMOTE_ADDR']);
+        $Uid = $mysql->regNewUser($_POST['phone'], $_POST['email'], $_POST['nick_name'], md5($_POST['password']), time(), $_SERVER['REMOTE_ADDR']);
         $mysql->saveEmailToken($Uid, $emailKey, "register");
         $result['action'] = 'jump';
         $result['msg'] = '注册成功，您的用户id(UID)为'.$Uid.'，轻注意进入邮箱查收验证邮件以启用账户';
@@ -67,10 +67,10 @@ switch ($_POST['type']) {
     case 'retrieve':
 
         break;
-    case 'phoneVerify':
+    case 'phone_verify':
         if (isEmpty($_POST['captcha']) ||
             isEmpty($_POST['phone']) ||
-            isEmpty($_POST['nickName'])) {
+            isEmpty($_POST['nick_name'])) {
             $result['action'] = 'alert';
             $result['msg'] = '必填项存在留空！';
             stdJqReturn($result);
@@ -104,7 +104,7 @@ switch ($_POST['type']) {
         }
         $SMS_Captcha = mt_rand(100000, 999999);
         $redis->phoneCapSet($_POST['phone'], $SMS_Captcha);
-        $message = "【白浪轻腾】尊敬的" . $_POST['nickName'] . "，您注册白浪轻腾通行证的验证码是：" . $SMS_Captcha . "，为了您的账号安全，请勿泄露给他人。";
+        $message = "【白浪轻腾】尊敬的" . $_POST['nick_name'] . "，您注册白浪轻腾通行证的验证码是：" . $SMS_Captcha . "，为了您的账号安全，请勿泄露给他人。";
         $sms->sendSMS($_POST['phone'], $message);
         $result['action'] = 'alert';
         $result['msg'] = '验证码已经发出，' . SMS_LIVE . '秒内有效，请注意查收';

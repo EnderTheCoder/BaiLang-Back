@@ -48,10 +48,13 @@ class Error_Core
             'msg' => null,
         ),
     );
-    public function retMsg($type, $msg = null)
+    public function retMsg($type, $result = null, $msg = null)
     {
-        if ($msg) $this->code[$type]['msg'] = $msg;
-        $this->jsonReturn($this->code[$type]);
+        $ret = $this->code[$type];
+        if ($result)
+            $ret = array_merge($ret, $result);
+        if ($msg) $ret['msg'] = $msg;
+        $this->jsonReturn($ret);
     }
 
     private function jsonReturn($res)
