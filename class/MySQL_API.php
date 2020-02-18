@@ -131,13 +131,13 @@ class MySQL_API
         return $result;
     }
 
-    public function API_Query($sql, $paramCnt, $param, $app_id)
+    public function API_Query($sql, $app_id, $params)
     {
         $db_name = $this->getApp($app_id);
         $conn = $this->STD_PDO_CONNECT($db_name['DB_Name']);
         $stmt = $conn->prepare($sql);
-        for ($i = 1; $i <= $paramCnt; $i++) {
-            $stmt->bindValue($i, $param[$i], PDO::PARAM_STR);
+        for ($i = 1; $i <= count($params); $i++) {
+            $stmt->bindValue($i, $params[$i], PDO::PARAM_STR);
         }
         $stmt->execute();
         return $stmt->fetchAll();
