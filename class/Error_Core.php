@@ -3,14 +3,12 @@
 
 class Error_Core
 {
-    var $code = array(
+    protected $code = array(
         'success' => array(
             'code' => 100,
             'msg' => '请求成功',
         ),
-        'jump' => array(
-
-        ),
+        'jump' => array(),
         'signErr' => array(
             'code' => 201,
             'msg' => '不错的尝试'
@@ -21,7 +19,7 @@ class Error_Core
         ),
         'emptyVal' => array(
             'code' => 203,
-            'msg' => '必填参数存有留空',
+            'msg' => '参数不完整',
         ),
         'smsMaxLimReached' => array(
             'code' => 204,
@@ -43,11 +41,20 @@ class Error_Core
             'code' => 208,
             'msg' => '该邮箱未经认证',
         ),
+        'emailServerErr' => array(
+            'code' => 209,
+            'msg' => '邮件服务器发生错误或邮件地址错误'
+        ),
+        'smsServerErr' => array(
+            'code' => 210,
+            'msg' => '短信服务发生错误'
+        ),
         'customMsg' => array(
             'code' => 300,
             'msg' => null,
         ),
     );
+
     public function retMsg($type, $result = null, $msg = null)
     {
         $ret = $this->code[$type];

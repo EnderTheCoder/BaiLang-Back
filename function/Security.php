@@ -31,25 +31,26 @@ function signatureSpawn($params, $AppKey)
     $str = '';
     foreach ($params as $key => $value) {
         if ($value !== '') {
-            $str .= $key.'='. rawurlencode($value).'&';
+            $str .= $key . '=' . rawurlencode($value) . '&';
         }
     }
-    $str .= 'app_key='.$AppKey;
+    $str .= 'app_key=' . $AppKey;
     $sign = strtoupper(md5($str));
     return $sign;
 }
 
 function signatureCheck()
 {
+    $return = new Error_Core();
     if (isEmpty($_POST['timestamp']) ||
         isEmpty($_POST['app_id']) ||
         isEmpty($_POST['sign'])
-    ) stdJqReturn('ERROR-502:缺少加密参数');
-    if (time() - $_POST['timestamp'] > MAX_SIGN_LIFETIME) stdJqReturn('ERROR-501：连接超时');
+    ) $return->retMsg('emptyVal');
+    if (time() - $_POST['timestamp'] > MAX_SIGN_LIFETIME) $return->retMsg('signOvertime');
     $sign = $_POST['sign'];
     unset($_POST['sign']);
     $sql = new MySQL_API();
     $AppKey = $sql->getApp($_POST['app_id']);
     if (signatureSpawn($_POST, $AppKey['AppKey']) != $sign)
-        stdJqReturn('ERROR-500：不错的尝试'.signatureSpawn($_POST, $AppKey['AppKey']));
+        $return->retMsg('signErr');
 }
