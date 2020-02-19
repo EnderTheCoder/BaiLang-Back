@@ -63,7 +63,6 @@ class SMS_API {
         $result = $this->curlPost( self::API_VARIABLE_URL, $postArr);
         return $result;
     }
-
     /**
      * 查询额度
      *
