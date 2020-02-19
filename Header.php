@@ -3,7 +3,7 @@ header('Access-Control-Allow-Origin:*');
 header('Content-Type:application/json; charset=utf-8');
 session_start();
 require "config/site_config.php";
-require "class/smtpEmailCore.php";
+require "class/Lib_SMTP.php";
 require "function/Return.php";
 require "function/Email.php";
 require "function/Security.php";

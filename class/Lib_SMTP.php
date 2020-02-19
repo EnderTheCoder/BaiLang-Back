@@ -3,7 +3,7 @@
  * 一个简单的PHP SMTP 发送邮件类
  */
 
-class Lib_Smtp {
+class Lib_SMTP {
     /**
      * @var string 邮件传输代理用户名
      * @access private
