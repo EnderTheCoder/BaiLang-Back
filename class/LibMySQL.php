@@ -1,7 +1,7 @@
 <?php
 
 
-class MySQL_API
+class LibMySQL
 {
     private function STD_MYSQL_CONNECT()
     {

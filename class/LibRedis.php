@@ -1,5 +1,5 @@
 <?php
-class Redis_API
+class LibRedis
 {
     private function STD_REDIS_CONNECT()
     {

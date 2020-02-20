@@ -1,7 +1,7 @@
 <?php
 
 
-class Error_Core
+class LibReturn
 {
     protected $code = array(
         'success' => array(

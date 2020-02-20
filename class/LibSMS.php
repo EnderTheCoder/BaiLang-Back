@@ -10,7 +10,7 @@
  * 该代码仅供学习和研究创蓝接口使用，只是提供一个参考。
  */
 
-class SMS_API {
+class LibSMS {
 
     //参数的配置 请登录zz.253.com 获取以下API信息 ↓↓↓↓↓↓↓
     const API_SEND_URL='http://XXX/msg/send/json'; //创蓝发送短信接口URL

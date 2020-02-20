@@ -41,7 +41,7 @@ function signatureSpawn($params, $AppKey)
 
 function signatureCheck()
 {
-    $return = new Error_Core();
+    $return = new LibReturn();
     if (isEmpty($_POST['timestamp']) ||
         isEmpty($_POST['app_id']) ||
         isEmpty($_POST['sign'])
@@ -49,7 +49,7 @@ function signatureCheck()
     if (time() - $_POST['timestamp'] > MAX_SIGN_LIFETIME) $return->retMsg('signOvertime');
     $sign = $_POST['sign'];
     unset($_POST['sign']);
-    $sql = new MySQL_API();
+    $sql = new LibMySQL();
     $AppKey = $sql->getApp($_POST['app_id']);
     if (signatureSpawn($_POST, $AppKey['AppKey']) != $sign)
         $return->retMsg('signErr');
